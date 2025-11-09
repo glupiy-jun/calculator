@@ -1,0 +1,66 @@
+def separation(expression):
+    expression = expression.replace("+", " + ")
+    expression = expression.replace("-", " - ")
+    expression = expression.replace("*", " * ")
+    expression = expression.replace("/", " / ")
+
+    parts = expression.split()
+
+    if len(parts) != 3:
+        return None, None, None
+
+    return parts[0], parts[1], parts[2]
+
+def convert_to_number(num_str):
+    try:
+        return float(num_str)
+    except ValueError:
+        return None
+
+def calculate(num1, operation, num2):
+    if operation == "*":
+        return num1 * num2
+    elif operation == "-":
+        return num1 - num2
+    elif operation == "+":
+        return num1 + num2
+    elif operation == "/":
+        if num2 == 0:
+            return "You can't divide by zero"
+        return num1 / num2
+    else:
+        return "Error: unknown operation"
+
+def main():
+    print("Hello, I'm calculator")
+    print("Enter the expression in the format: number/operation/number")
+    print("If you want to leave, write: I hate math")
+
+    while True:
+        user_expression = input("Enter the expression:").strip()
+
+        if user_expression.lower() == "i hate math":
+            print("Have a nice day")
+            break
+
+        num1_str, operation, num2_str = separation(user_expression)
+        if num1_str is None or operation is None or num2_str is None:
+            print("Error: Incorrect expression format")
+            print("Enter the expression in the format: number/operation/number")
+            continue
+
+        user_num1 = convert_to_number(num1_str)
+        user_num2 = convert_to_number(num2_str)
+
+        if user_num1 is None or user_num2 is None:
+            print("Enter a numeric value")
+            continue
+
+        result = calculate(user_num1, operation, user_num2)
+
+        if isinstance(result, str):
+            print(result)
+        else:
+            print(f"Result: {user_expression} = {result}")
+
+if __name__ == "__main__":
